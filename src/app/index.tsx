@@ -1,4 +1,4 @@
-import { Pressable, Text, View, StyleSheet } from 'react-native';
+import { Pressable, Text, View, StyleSheet, Button } from 'react-native';
 import { Link } from 'expo-router';
 
 export default function Home() {
@@ -9,14 +9,10 @@ export default function Home() {
             </Text>
             <View style={styles.conteiner}>
                 <Link href="/data" asChild>
-                    <Pressable >
-                        <Text style={styles.item}>Dados</Text>
-                    </Pressable>
+                    <Button title='Dados' />
                 </Link>
                 <Link href="/calculator" asChild>
-                    <Pressable  >
-                        <Text style={styles.item}>Calculadora</Text>
-                    </Pressable>
+                    <Button title='Calculadora' />
                 </Link>
             </View>
         </View>
