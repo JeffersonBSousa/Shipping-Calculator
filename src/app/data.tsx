@@ -1,24 +1,22 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 
 type RootStackParamList = {
   Details: {
-    nomeMotorista: string;
-    modeloCaminhao: string;
-    mediaConsumo: string;
-  };
-};
+    nomeMotorista: string
+    modeloCaminhao: string
+    mediaConsumo: string
+  }
+}
 
-type DetailsScreenRouteProp = RouteProp<RootStackParamList, 'Details'>;
+type DetailsScreenRouteProp = RouteProp<RootStackParamList, 'Details'>
 
-type DetailsProps = {
-  route: DetailsScreenRouteProp;
-};
+const Details: React.FC = () => {
+  const route = useRoute<DetailsScreenRouteProp>()
 
-const Details: React.FC<DetailsProps> = ({ route }) => {
   // Recuperar os parâmetros passados
-  const { nomeMotorista, modeloCaminhao, mediaConsumo } = route.params;
+  const { nomeMotorista, modeloCaminhao, mediaConsumo } = route.params
 
   return (
     <View style={styles.container}>
@@ -26,8 +24,8 @@ const Details: React.FC<DetailsProps> = ({ route }) => {
       <Text style={styles.text}>Modelo do Caminhão: {modeloCaminhao}</Text>
       <Text style={styles.text}>Média de Consumo: {mediaConsumo} Km/L</Text>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -40,6 +38,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
   },
-});
+})
 
-export default Details;
+export default Details
+
