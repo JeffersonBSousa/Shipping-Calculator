@@ -33,14 +33,6 @@ const App: React.FC = () => {
     return (
         <ScrollView contentContainerStyle={styles.contentContainer}>
             <Text style={styles.title}>Informações</Text>
-            <Text>Preço do combustivel (R$)</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="0.00"
-                value={number7}
-                onChangeText={setNumber7}
-            />
             <Text>Média de consumo (Km/L) caminhão</Text>
             <TextInput
                 style={styles.input}
@@ -49,7 +41,7 @@ const App: React.FC = () => {
                 value={number8}
                 onChangeText={setNumber8}
             />
-            <Text style={styles.title}>Sobre a viagem</Text>
+            <Text style={styles.title}>Informações</Text>
             <Text>Valor do frete (R$)</Text>
             <TextInput
                 style={styles.input}
@@ -66,7 +58,15 @@ const App: React.FC = () => {
                 value={number2}
                 onChangeText={setNumber2}
             />
-            <Text style={styles.title}>Custos esperados</Text>
+            <Text>Preço do combustivel (R$)</Text>
+            <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                placeholder="0.00"
+                value={number7}
+                onChangeText={setNumber7}
+            />
+            <Text style={styles.title}>Custos</Text>
             <Text>Alimentação (R$)</Text>
             <TextInput
                 style={styles.input}
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
+        backgroundColor: '#e8e8e8',
     },
     title: {
         fontSize: 24,
@@ -133,11 +134,12 @@ const styles = StyleSheet.create({
         padding: 8,
         borderWidth: 1,
         borderColor: '#ccc',
+        marginBottom: 10,
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '80%',
+        alignItems: 'center',
         marginBottom: 16,
     },
     result: {
