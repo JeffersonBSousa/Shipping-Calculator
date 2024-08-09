@@ -10,7 +10,7 @@ export default function Home() {
                 Calculadora de Fretes
             </Text>
             <View style={styles.container}>
-                <Link href="/data" asChild>
+                <Link href="/Details" asChild>
                 <Pressable>
                         <Image
                             source={require('../../assets/images/motorista.png')}

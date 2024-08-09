@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
+type RootStackParamList = {
+    Details: {
+        nomeMotorista: string;
+        modeloCaminhao: string;
+        mediaConsumo: string;
+    };
+    
+};
+
+type DetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Details'>;
 
 const Info: React.FC = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<DetailsScreenNavigationProp>();
 
     const [number21, setNumber21] = useState<string>('');
     const [number22, setNumber22] = useState<string>('');
@@ -15,23 +26,25 @@ const Info: React.FC = () => {
     const [tempNumber22, setTempNumber22] = useState<string>('');
     const [tempNumber23, setTempNumber23] = useState<string>('');
 
-    const save = () => {
+    useEffect(() => {
+        if (number21 && number22 && number23) {
+            navigation.navigate('Details', {
+                nomeMotorista: number21,
+                modeloCaminhao: number22,
+                mediaConsumo: number23,
+            });
+        }
+    }, [number21, number22, number23]);
 
+    const save = () => {
         setNumber21(tempNumber21);
         setNumber22(tempNumber22);
         setNumber23(tempNumber23);
-
-        navigation.navigate('data', {
-            nomeMotorista: tempNumber21,
-            modeloCaminhao: tempNumber22,
-            mediaConsumo: tempNumber23,
-          });
-    }
-
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.contentContainer}>
-            <Text>Nome do motorista</Text>
+            <Text style={styles.title2}>Nome do motorista</Text>
             <TextInput
                 style={styles.input}
                 keyboardType="default"
@@ -39,7 +52,7 @@ const Info: React.FC = () => {
                 value={tempNumber21}
                 onChangeText={setTempNumber21}
             />
-            <Text>Modelo do caminhão</Text>
+            <Text style={styles.title2}>Modelo do caminhão</Text>
             <TextInput
                 style={styles.input}
                 keyboardType="default"
@@ -47,11 +60,11 @@ const Info: React.FC = () => {
                 value={tempNumber22}
                 onChangeText={setTempNumber22}
             />
-            <Text>Média de consumo (Km/L) caminhão</Text>
+            <Text style={styles.title2}>Média de consumo (Km/L) caminhão</Text>
             <TextInput
                 style={styles.input}
                 keyboardType="numeric"
-                placeholder="0.00"
+                placeholder="Apenas numero"
                 value={tempNumber23}
                 onChangeText={setTempNumber23}
             />
@@ -70,6 +83,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#e8e8e8',
         padding: 16,
     },
+    title2: {
+        fontSize: 18,
+    },
     input: {
         width: '100%',
         padding: 8,
@@ -85,4 +101,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Info
+export default Info;

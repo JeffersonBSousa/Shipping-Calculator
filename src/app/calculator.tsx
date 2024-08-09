@@ -3,18 +3,18 @@ import { StyleSheet, Text, TextInput, View, Button, ScrollView } from 'react-nat
 
 const App: React.FC = () => {
     //Informações
-    const [number1, setNumber1] = useState<string>('');
-    const [number2, setNumber2] = useState<string>('');
+    const [number1, setNumber1] = useState<string>('0');
+    const [number2, setNumber2] = useState<string>('0');
 
     //Sobre a viagem
-    const [number7, setNumber7] = useState<string>('');
-    const [number8, setNumber8] = useState<string>('');
+    const [number7, setNumber7] = useState<string>('0');
+    const [number8, setNumber8] = useState<string>('0');
 
     //Custos esperados
-    const [number3, setNumber3] = useState<string>('');
-    const [number4, setNumber4] = useState<string>('');
-    const [number5, setNumber5] = useState<string>('');
-    const [number6, setNumber6] = useState<string>('');
+    const [number3, setNumber3] = useState<string>('0');
+    const [number4, setNumber4] = useState<string>('0');
+    const [number5, setNumber5] = useState<string>('0');
+    const [number6, setNumber6] = useState<string>('0');
 
     const [result, setResult] = useState<number | null>(null);
 
@@ -31,81 +31,87 @@ const App: React.FC = () => {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.title}>Informações</Text>
-            <Text>Média de consumo (Km/L) caminhão</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="0.00"
-                value={number8}
-                onChangeText={setNumber8}
-            />
-            <Text style={styles.title}>Informações</Text>
-            <Text>Valor do frete (R$)</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="0.00"
-                value={number1}
-                onChangeText={setNumber1}
-            />
-            <Text>Distância da viagem (Km)</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="0.00"
-                value={number2}
-                onChangeText={setNumber2}
-            />
-            <Text>Preço do combustivel (R$)</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="0.00"
-                value={number7}
-                onChangeText={setNumber7}
-            />
-            <Text style={styles.title}>Custos</Text>
-            <Text>Alimentação (R$)</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="0.00"
-                value={number3}
-                onChangeText={setNumber3}
-            />
-            <Text>Pagamento de ajudante (R$)</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="0.00"
-                value={number4}
-                onChangeText={setNumber4}
-            />
-            <Text>Estadia (R$)</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="0.00"
-                value={number5}
-                onChangeText={setNumber5}
-            />
-            <Text>Outros custos (R$)</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="0.00"
-                value={number6}
-                onChangeText={setNumber6}
-            />
-            <View style={styles.buttonContainer}>
-                <Button title="Calcular" onPress={calculator} />
-            </View>
+        <View>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+                <Text style={styles.title}>AAAA</Text>
+                <Text style={styles.title2}>Média de consumo (Km/L) caminhão</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder=""
+                    value={number8}
+                    onChangeText={setNumber8}
+                />
+                <Text style={styles.title}>Informações</Text>
+                <Text style={styles.title2}>Valor do frete (R$)</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder=""
+                    value={number1}
+                    onChangeText={setNumber1}
+                />
+                <Text style={styles.title2}>Distância da viagem (Km)</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder=""
+                    value={number2}
+                    onChangeText={setNumber2}
+                />
+                <Text style={styles.title2}>Preço do combustivel (R$)</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder=""
+                    value={number7}
+                    onChangeText={setNumber7}
+                />
+                <Text style={styles.title}>Custos</Text>
+                <Text style={styles.title2}>Alimentação (R$)</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder=""
+                    value={number3}
+                    onChangeText={setNumber3}
+                />
+                <Text style={styles.title2}>Pagamento de ajudante (R$)</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder=""
+                    value={number4}
+                    onChangeText={setNumber4}
+                />
+                <Text style={styles.title2}>Estadia (R$)</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder=""
+                    value={number5}
+                    onChangeText={setNumber5}
+                />
+                <Text style={styles.title2}>Outros custos (R$)</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder=""
+                    value={number6}
+                    onChangeText={setNumber6}
+                />
+                <View style={styles.buttonContainer}>
+                    <Button title="Calcular" onPress={calculator} />
+                </View>
+            </ScrollView>
+            <View >
             {result !== null && (
-                <Text style={styles.result}>Lucro estimado:  R${result}</Text>
+                <Text style={styles.footer}>
+                    Lucro estimado:  R${result.toFixed(2)}
+                </Text>
             )}
-        </ScrollView>
+            </View>
+        </View>
     );
 };
 
@@ -116,10 +122,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 16,
         backgroundColor: '#e8e8e8',
+        paddingBottom: 60,
     },
     title: {
         fontSize: 24,
         marginBottom: 16,
+    },
+    title2: {
+        fontSize: 18,
     },
     inputContainer: {
         width: '80%',
@@ -142,9 +152,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 16,
     },
-    result: {
-        fontSize: 24,
-        marginTop: 16,
+    footer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 60,
+        backgroundColor: '#a6f5a6', 
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 16,
+        borderWidth: 1, 
+        borderColor: '#000', 
+        fontSize: 22,
     },
 });
 

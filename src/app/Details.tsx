@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
+import { View, Text, StyleSheet, Button, } from 'react-native'
+import { RouteProp, useRoute } from '@react-navigation/native'
+import { Link } from 'expo-router'
 
 type RootStackParamList = {
   Details: {
@@ -15,7 +16,6 @@ type DetailsScreenRouteProp = RouteProp<RootStackParamList, 'Details'>
 const Details: React.FC = () => {
   const route = useRoute<DetailsScreenRouteProp>()
 
-  // Recuperar os parâmetros passados
   const { nomeMotorista, modeloCaminhao, mediaConsumo } = route.params
 
   return (
@@ -23,6 +23,10 @@ const Details: React.FC = () => {
       <Text style={styles.text}>Nome do Motorista: {nomeMotorista}</Text>
       <Text style={styles.text}>Modelo do Caminhão: {modeloCaminhao}</Text>
       <Text style={styles.text}>Média de Consumo: {mediaConsumo} Km/L</Text>
+
+      <Link href="/form" asChild>
+        <Button title='Atualizar dados' />
+      </Link>
     </View>
   )
 }
@@ -33,6 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#e8e8e8',
   },
   text: {
     fontSize: 18,
