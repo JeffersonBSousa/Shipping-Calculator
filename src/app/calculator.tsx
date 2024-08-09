@@ -31,9 +31,11 @@ const App: React.FC = () => {
     };
 
     return (
-        <View>
+        <View style={styles.body}>
+            <Text style={styles.title}>
+                Gerenciador de fretes
+            </Text>
             <ScrollView contentContainerStyle={styles.contentContainer}>
-                <Text style={styles.title}>AAAA</Text>
                 <Text style={styles.title2}>Média de consumo (Km/L) caminhão</Text>
                 <TextInput
                     style={styles.input}
@@ -42,7 +44,7 @@ const App: React.FC = () => {
                     value={number8}
                     onChangeText={setNumber8}
                 />
-                <Text style={styles.title}>Informações</Text>
+                <Text style={styles.title3}>Informações</Text>
                 <Text style={styles.title2}>Valor do frete (R$)</Text>
                 <TextInput
                     style={styles.input}
@@ -67,7 +69,7 @@ const App: React.FC = () => {
                     value={number7}
                     onChangeText={setNumber7}
                 />
-                <Text style={styles.title}>Custos</Text>
+                <Text style={styles.title3}>Custos</Text>
                 <Text style={styles.title2}>Alimentação (R$)</Text>
                 <TextInput
                     style={styles.input}
@@ -116,20 +118,36 @@ const App: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+    body: {
+        flex: 1,
+    },
     contentContainer: {
         flexGrow: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        padding: 16,
-        backgroundColor: '#e8e8e8',
+        padding: 20,
         paddingBottom: 60,
     },
     title: {
+        backgroundColor: '#000000',
+        color: '#ffffff',
         fontSize: 24,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 12,
+    },
+    title3: {
+        fontSize: 24,
+        marginTop: 16,
         marginBottom: 16,
+        backgroundColor: '#e3e3e3',
+        width: '100%',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        borderWidth: 1, 
+        borderColor: '#ccc', 
     },
     title2: {
-        fontSize: 18,
+        fontSize: 16,
     },
     inputContainer: {
         width: '80%',
@@ -158,7 +176,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         height: 60,
-        backgroundColor: '#a6f5a6', 
+        backgroundColor: '#8cfa92', 
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,

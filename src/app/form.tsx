@@ -10,7 +10,7 @@ type RootStackParamList = {
         modeloCaminhao: string;
         mediaConsumo: string;
     };
-    
+
 };
 
 type DetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Details'>;
@@ -43,48 +43,61 @@ const Info: React.FC = () => {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.title2}>Nome do motorista</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="default"
-                placeholder=" "
-                value={tempNumber21}
-                onChangeText={setTempNumber21}
-            />
-            <Text style={styles.title2}>Modelo do caminhão</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="default"
-                placeholder=" "
-                value={tempNumber22}
-                onChangeText={setTempNumber22}
-            />
-            <Text style={styles.title2}>Média de consumo (Km/L) caminhão</Text>
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="Apenas numero"
-                value={tempNumber23}
-                onChangeText={setTempNumber23}
-            />
-            <View style={styles.buttonContainer}>
-                <Button title="Atualizar" onPress={save} />
-            </View>
-        </ScrollView>
+        <View>
+            <Text style={styles.title}>
+                Gerenciador de fretes
+            </Text>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+                <Text style={styles.title2}>Nome do motorista</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="default"
+                    placeholder=" "
+                    value={tempNumber21}
+                    onChangeText={setTempNumber21}
+                />
+                <Text style={styles.title2}>Modelo do caminhão</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="default"
+                    placeholder=" "
+                    value={tempNumber22}
+                    onChangeText={setTempNumber22}
+                />
+                <Text style={styles.title2}>Média de consumo (Km/L) caminhão</Text>
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder="Apenas numero"
+                    value={tempNumber23}
+                    onChangeText={setTempNumber23}
+                />
+                <View style={styles.buttonContainer}>
+                    <Button title="Atualizar" onPress={save} />
+                </View>
+            </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    title: {
+        backgroundColor: '#000000',
+        color: '#ffffff',
+        fontSize: 24,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 12,
+    },
     contentContainer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#e8e8e8',
-        padding: 16,
+        padding: 20,
     },
     title2: {
         fontSize: 18,
+        marginTop: 15,
+        marginBottom: 5,
     },
     input: {
         width: '100%',

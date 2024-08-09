@@ -1,13 +1,11 @@
 import { Pressable, Text, View, StyleSheet,  Image } from 'react-native';
 import { Link } from 'expo-router';
 
-
-
 export default function Home() {
     return (
         <View style={styles.body}>
-            <Text style={styles.title} >
-                Calculadora de Fretes
+            <Text style={styles.title}>
+                Gerenciador de fretes
             </Text>
             <View style={styles.container}>
                 <Link href="/Details" asChild>
@@ -26,6 +24,14 @@ export default function Home() {
                         />
                     </Pressable>
                 </Link>
+                <Link href="/report" asChild>
+                    <Pressable>
+                        <Image
+                            source={require('../../assets/images/relatorio.png')}
+                            style={styles.image}
+                        />
+                    </Pressable>
+                </Link>
             </View>
         </View>
     );
@@ -34,24 +40,23 @@ export default function Home() {
 const styles = StyleSheet.create({
     body: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        backgroundColor: '#e8e8e8',
+        backgroundColor: '#ffffff',
     },
     container: {
-        flex: 1,
-        justifyContent: 'center',
+        marginTop: 40,
         alignItems: 'center',
-        gap: 70,
+        gap: 40,
       },
     title: {
-        position: 'absolute',
-        top: 40,
+        backgroundColor: '#000000',
+        color: '#ffffff',
         fontSize: 24,
         fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 12,
     },
     image: {
-        width: 150,
-        height: 150,
+        width: 170,
+        height: 170,
       },
 })
