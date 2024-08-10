@@ -32,7 +32,7 @@ const Details: React.FC = () => {
         <Text style={styles.text2}>{mediaConsumo} Km/L</Text>
 
         <Link href="/form" asChild>
-          <Button title='Atualizar dados' />
+          <Button title='Editar informações' />
         </Link>
       </View>
     </View>
@@ -42,18 +42,14 @@ const Details: React.FC = () => {
 const styles = StyleSheet.create({
   text1: {
     fontSize: 16,
-    marginLeft: 50,
-    marginRight: 50,
-    width: '90%',
+    width: '100%',
   },
   text2: {
     fontSize: 20,
-    marginLeft: 50,
-    marginRight: 50,
     marginBottom: 50,
-    width: '90%',
+    width: '100%',
     fontWeight: 'bold',
-    backgroundColor: '#cccccc',
+    backgroundColor: '#f2f2f2',
     padding: 5,
   },
   body: {
@@ -61,16 +57,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   container: {
-    marginTop: 50,
+    marginTop: 120,
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
   title: {
     backgroundColor: '#000000',
     color: '#ffffff',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    padding: 12,
+    padding: 6,
   },
 })
 

@@ -6,8 +6,8 @@ export default function report() {
             <Text style={styles.title}>
                 Gerenciador de fretes
             </Text>
-            <Text>
-                RELATORIO
+            <Text style={styles.aaa}>
+                FUTURO RELATORIO
             </Text>
         </View>
     );
@@ -17,10 +17,14 @@ const styles = StyleSheet.create({
 title: {
     backgroundColor: '#000000',
     color: '#ffffff',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    padding: 12,
+    padding: 6,
 },
+aaa:{
+    textAlign: 'center',
+    marginTop: 100,
+}
 
 });

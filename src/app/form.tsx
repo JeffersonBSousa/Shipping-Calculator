@@ -48,29 +48,32 @@ const Info: React.FC = () => {
                 Gerenciador de fretes
             </Text>
             <ScrollView contentContainerStyle={styles.contentContainer}>
-                <Text style={styles.title2}>Nome do motorista</Text>
+                <Text style={styles.title2}>Nome do Motorista:</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="default"
                     placeholder=" "
                     value={tempNumber21}
                     onChangeText={setTempNumber21}
+
                 />
-                <Text style={styles.title2}>Modelo do caminhão</Text>
+                <Text style={styles.title2}>Modelo do Caminhão:</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="default"
                     placeholder=" "
                     value={tempNumber22}
                     onChangeText={setTempNumber22}
+
                 />
-                <Text style={styles.title2}>Média de consumo (Km/L) caminhão</Text>
+                <Text style={styles.title2}>Média de Consumo (Km/L) do Caminhão:</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="numeric"
                     placeholder="Apenas numero"
                     value={tempNumber23}
                     onChangeText={setTempNumber23}
+
                 />
                 <View style={styles.buttonContainer}>
                     <Button title="Atualizar" onPress={save} />
@@ -84,33 +87,32 @@ const styles = StyleSheet.create({
     title: {
         backgroundColor: '#000000',
         color: '#ffffff',
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-        padding: 12,
+        padding: 6,
     },
     contentContainer: {
-        flex: 1,
         alignItems: 'center',
-        padding: 20,
+        marginTop: 70,
+        paddingHorizontal: 20,
     },
     title2: {
-        fontSize: 18,
-        marginTop: 15,
-        marginBottom: 5,
+        fontSize: 16,
+        marginTop: 50,
+        width: '100%',
     },
     input: {
         width: '100%',
-        padding: 8,
+        padding: 5,
         borderWidth: 1,
-        marginBottom: 10,
         borderColor: '#ccc',
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 16,
+        marginTop: 50,
     },
 })
 

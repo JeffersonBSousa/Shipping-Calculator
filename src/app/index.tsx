@@ -43,17 +43,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
     container: {
-        marginTop: 40,
+        marginTop: 100,
         alignItems: 'center',
         gap: 40,
       },
     title: {
         backgroundColor: '#000000',
         color: '#ffffff',
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-        padding: 12,
+        padding: 6,
     },
     image: {
         width: 170,
