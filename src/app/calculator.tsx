@@ -19,13 +19,12 @@ const Calc = () => {
         setPagamentoAjudante,
         setEstadia,
         setOutrosCustos,
+        addViagem,
     } = useFormStore();
-
 
     const [result, setResult] = useState<number | null>(null);
 
     const handleSubmit = () => {
-
         if (!mediaCaminhao) {
             alert('Atualize a ficha do motorista antes de usar a calculadora');
             return;
@@ -41,18 +40,59 @@ const Calc = () => {
             return;
         }
 
-
         const litros = parseFloat(distanciaViagem) / parseFloat(mediaCaminhao);
         console.log({ litros });
 
         const custoCombustivel = parseFloat(preçoCombustivel) * litros;
         console.log({ custoCombustivel });
 
-        const lucro = parseFloat(valorFrete) - parseFloat(alimentação) - parseFloat(pagamentoAjudante) - parseFloat(estadia) - parseFloat(outrosCustos) - custoCombustivel;
+        const custoTotal = parseFloat(alimentação) + parseFloat(pagamentoAjudante) + parseFloat(estadia) + parseFloat(outrosCustos) + custoCombustivel;
+        const lucro = parseFloat(valorFrete) - custoTotal;
         setResult(lucro);
-        console.log({ lucro });
+        console.log({ lucro, custoTotal });
+    };
 
-    }
+    const handleSave = () => {
+        if (result === null) {
+            alert('Calcule o lucro antes de salvar.');
+            return;
+        }
+
+        if (!valorFrete ||
+            !distanciaViagem ||
+            !preçoCombustivel ||
+            !alimentação ||
+            !pagamentoAjudante ||
+            !estadia ||
+            !outrosCustos) {
+            alert('Nenhum campo pode ficar vazio, coloque 0 naquele que não houver valor');
+            return;
+        }
+
+        
+        addViagem({
+            valorFrete,
+            distanciaViagem,
+            preçoCombustivel,
+            alimentação,
+            pagamentoAjudante,
+            estadia,
+            outrosCustos,
+            lucro: result.toFixed(2),
+        });
+
+       
+        setValorFrete("0");
+        setDistanciaViagem("0");
+        setPreçoCombustivel("0");
+        setAlimentação("0");
+        setPagamentoAjudante("0");
+        setEstadia("0");
+        setOutrosCustos("0");
+        setResult(null);
+
+        alert('Viagem salva com sucesso');
+    };
 
     return (
         <View style={styles.body}>
@@ -120,7 +160,11 @@ const Calc = () => {
                 />
                 <View style={styles.buttonContainer}>
                     <Button title="Calcular" onPress={handleSubmit} />
+                    <Button title="Salvar" onPress={handleSave} />
                 </View>
+                <Text>
+                    Os valores devem ser separados por . (Ex: 5.10)
+                </Text>
             </ScrollView>
             <View >
                 {result !== null && (
@@ -186,6 +230,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 30,
+        gap: 50,
     },
     footer: {
         position: 'absolute',
