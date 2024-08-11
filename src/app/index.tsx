@@ -5,7 +5,7 @@ export default function Home() {
     return (
         <View style={styles.body}>
             <Text style={styles.title}>
-                Gerenciador de fretes
+                Gerenciador de Fretes
             </Text>
             <View style={styles.container}>
                 <Link href="/Details" asChild>
@@ -43,9 +43,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
     container: {
-        marginTop: 100,
+        marginTop: 120,
         alignItems: 'center',
-        gap: 40,
+        gap: 70,
       },
     title: {
         backgroundColor: '#000000',
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         padding: 6,
     },
     image: {
-        width: 170,
-        height: 170,
+        width: 130,
+        height: 130,
       },
 })

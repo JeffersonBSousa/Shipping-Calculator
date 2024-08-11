@@ -1,27 +1,17 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button, } from 'react-native'
-import { RouteProp, useRoute } from '@react-navigation/native'
 import { Link } from 'expo-router'
+import useFormStore from '../store/useFormStore'
 
-type RootStackParamList = {
-  Details: {
-    nomeMotorista: string
-    modeloCaminhao: string
-    mediaConsumo: string
-  }
-}
 
-type DetailsScreenRouteProp = RouteProp<RootStackParamList, 'Details'>
+const Details= () => {
 
-const Details: React.FC = () => {
-  const route = useRoute<DetailsScreenRouteProp>()
-
-  const { nomeMotorista, modeloCaminhao, mediaConsumo } = route.params
+  const { nomeMotorista, modeloCaminhao, mediaCaminhao } = useFormStore();
 
   return (
     <View style={styles.body}>
       <Text style={styles.title}>
-        Gerenciador de fretes
+        Ficha do Motorista
       </Text>
       <View style={styles.container}>
         <Text style={styles.text1}>Nome do Motorista:</Text>
@@ -29,7 +19,7 @@ const Details: React.FC = () => {
         <Text style={styles.text1}>Modelo do Caminhão:</Text>
         <Text style={styles.text2}>{modeloCaminhao}.</Text>
         <Text style={styles.text1}>Média de Consumo:</Text>
-        <Text style={styles.text2}>{mediaConsumo} Km/L</Text>
+        <Text style={styles.text2}>{mediaCaminhao} Km/L</Text>
 
         <Link href="/form" asChild>
           <Button title='Editar informações' />

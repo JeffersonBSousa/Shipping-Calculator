@@ -4,10 +4,10 @@ export default function report() {
     return (
         <View>
             <Text style={styles.title}>
-                Gerenciador de fretes
+                Relatorios de Fretes
             </Text>
             <Text style={styles.aaa}>
-                FUTURO RELATORIO
+                Em breve
             </Text>
         </View>
     );
@@ -25,6 +25,7 @@ title: {
 aaa:{
     textAlign: 'center',
     marginTop: 100,
+    fontSize: 30,
 }
 
 });
