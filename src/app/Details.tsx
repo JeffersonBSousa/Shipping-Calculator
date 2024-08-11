@@ -1,47 +1,63 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button, } from 'react-native'
-import { RouteProp, useRoute } from '@react-navigation/native'
 import { Link } from 'expo-router'
+import useFormStore from '../store/useFormStore'
 
-type RootStackParamList = {
-  Details: {
-    nomeMotorista: string
-    modeloCaminhao: string
-    mediaConsumo: string
-  }
-}
 
-type DetailsScreenRouteProp = RouteProp<RootStackParamList, 'Details'>
+const Details= () => {
 
-const Details: React.FC = () => {
-  const route = useRoute<DetailsScreenRouteProp>()
-
-  const { nomeMotorista, modeloCaminhao, mediaConsumo } = route.params
+  const { nomeMotorista, modeloCaminhao, mediaCaminhao } = useFormStore();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Nome do Motorista: {nomeMotorista}</Text>
-      <Text style={styles.text}>Modelo do Caminhão: {modeloCaminhao}</Text>
-      <Text style={styles.text}>Média de Consumo: {mediaConsumo} Km/L</Text>
+    <View style={styles.body}>
+      <Text style={styles.title}>
+        Ficha do Motorista
+      </Text>
+      <View style={styles.container}>
+        <Text style={styles.text1}>Nome do Motorista:</Text>
+        <Text style={styles.text2}>{nomeMotorista}.</Text>
+        <Text style={styles.text1}>Modelo do Caminhão:</Text>
+        <Text style={styles.text2}>{modeloCaminhao}.</Text>
+        <Text style={styles.text1}>Média de Consumo:</Text>
+        <Text style={styles.text2}>{mediaCaminhao} Km/L</Text>
 
-      <Link href="/form" asChild>
-        <Button title='Atualizar dados' />
-      </Link>
+        <Link href="/form" asChild>
+          <Button title='Editar informações' />
+        </Link>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#e8e8e8',
+  text1: {
+    fontSize: 16,
+    width: '100%',
   },
-  text: {
-    fontSize: 18,
-    marginBottom: 10,
+  text2: {
+    fontSize: 20,
+    marginBottom: 50,
+    width: '100%',
+    fontWeight: 'bold',
+    backgroundColor: '#f2f2f2',
+    padding: 5,
+  },
+  body: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  container: {
+    marginTop: 120,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  title: {
+    backgroundColor: '#000000',
+    color: '#ffffff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 6,
   },
 })
 

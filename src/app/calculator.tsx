@@ -1,135 +1,170 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Button, ScrollView } from 'react-native';
+import useFormStore from '../store/useFormStore';
 
-const App: React.FC = () => {
-    //Informações
-    const [number1, setNumber1] = useState<string>('0');
-    const [number2, setNumber2] = useState<string>('0');
+const Calc = () => {
+    const {
+        mediaCaminhao,
+        valorFrete,
+        distanciaViagem,
+        preçoCombustivel,
+        alimentação,
+        pagamentoAjudante,
+        estadia,
+        outrosCustos,
+        setValorFrete,
+        setDistanciaViagem,
+        setPreçoCombustivel,
+        setAlimentação,
+        setPagamentoAjudante,
+        setEstadia,
+        setOutrosCustos,
+    } = useFormStore();
 
-    //Sobre a viagem
-    const [number7, setNumber7] = useState<string>('0');
-    const [number8, setNumber8] = useState<string>('0');
-
-    //Custos esperados
-    const [number3, setNumber3] = useState<string>('0');
-    const [number4, setNumber4] = useState<string>('0');
-    const [number5, setNumber5] = useState<string>('0');
-    const [number6, setNumber6] = useState<string>('0');
 
     const [result, setResult] = useState<number | null>(null);
 
-    const calculator = () => {
-        const litros = parseFloat(number2) / parseFloat(number8);
+    const handleSubmit = () => {
+
+        if (!mediaCaminhao) {
+            alert('Atualize a ficha do motorista antes de usar a calculadora');
+            return;
+        }
+        if (!valorFrete ||
+            !distanciaViagem ||
+            !preçoCombustivel ||
+            !alimentação ||
+            !pagamentoAjudante ||
+            !estadia ||
+            !outrosCustos) {
+            alert('Nenhum campo pode ficar vazio, coloque 0 naquele que não houver valor');
+            return;
+        }
+
+
+        const litros = parseFloat(distanciaViagem) / parseFloat(mediaCaminhao);
         console.log({ litros });
 
-        const custoCombustivel = parseFloat(number7) * litros;
+        const custoCombustivel = parseFloat(preçoCombustivel) * litros;
         console.log({ custoCombustivel });
 
-        const lucro = parseFloat(number1) - parseFloat(number3) - parseFloat(number4) - parseFloat(number5) - parseFloat(number6) - custoCombustivel;
+        const lucro = parseFloat(valorFrete) - parseFloat(alimentação) - parseFloat(pagamentoAjudante) - parseFloat(estadia) - parseFloat(outrosCustos) - custoCombustivel;
         setResult(lucro);
         console.log({ lucro });
-    };
+
+    }
 
     return (
-        <View>
+        <View style={styles.body}>
+            <Text style={styles.title}>
+                Calculadora de Fretes
+            </Text>
             <ScrollView contentContainerStyle={styles.contentContainer}>
-                <Text style={styles.title}>AAAA</Text>
-                <Text style={styles.title2}>Média de consumo (Km/L) caminhão</Text>
-                <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                    placeholder=""
-                    value={number8}
-                    onChangeText={setNumber8}
-                />
-                <Text style={styles.title}>Informações</Text>
+                <Text style={styles.title3}>Informações</Text>
                 <Text style={styles.title2}>Valor do frete (R$)</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="numeric"
                     placeholder=""
-                    value={number1}
-                    onChangeText={setNumber1}
+                    value={valorFrete}
+                    onChangeText={setValorFrete}
                 />
                 <Text style={styles.title2}>Distância da viagem (Km)</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="numeric"
                     placeholder=""
-                    value={number2}
-                    onChangeText={setNumber2}
+                    value={distanciaViagem}
+                    onChangeText={setDistanciaViagem}
                 />
                 <Text style={styles.title2}>Preço do combustivel (R$)</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="numeric"
                     placeholder=""
-                    value={number7}
-                    onChangeText={setNumber7}
+                    value={preçoCombustivel}
+                    onChangeText={setPreçoCombustivel}
                 />
-                <Text style={styles.title}>Custos</Text>
+                <Text style={styles.title3}>Custos</Text>
                 <Text style={styles.title2}>Alimentação (R$)</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="numeric"
                     placeholder=""
-                    value={number3}
-                    onChangeText={setNumber3}
+                    value={alimentação}
+                    onChangeText={setAlimentação}
                 />
                 <Text style={styles.title2}>Pagamento de ajudante (R$)</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="numeric"
                     placeholder=""
-                    value={number4}
-                    onChangeText={setNumber4}
+                    value={pagamentoAjudante}
+                    onChangeText={setPagamentoAjudante}
                 />
                 <Text style={styles.title2}>Estadia (R$)</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="numeric"
                     placeholder=""
-                    value={number5}
-                    onChangeText={setNumber5}
+                    value={estadia}
+                    onChangeText={setEstadia}
                 />
                 <Text style={styles.title2}>Outros custos (R$)</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="numeric"
                     placeholder=""
-                    value={number6}
-                    onChangeText={setNumber6}
+                    value={outrosCustos}
+                    onChangeText={setOutrosCustos}
                 />
                 <View style={styles.buttonContainer}>
-                    <Button title="Calcular" onPress={calculator} />
+                    <Button title="Calcular" onPress={handleSubmit} />
                 </View>
             </ScrollView>
             <View >
-            {result !== null && (
-                <Text style={styles.footer}>
-                    Lucro estimado:  R${result.toFixed(2)}
-                </Text>
-            )}
+                {result !== null && (
+                    <Text style={styles.footer}>
+                        Lucro estimado:  R${result.toFixed(2)}
+                    </Text>
+                )}
             </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    body: {
+        flex: 1,
+    },
     contentContainer: {
         flexGrow: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        padding: 16,
-        backgroundColor: '#e8e8e8',
+        padding: 20,
         paddingBottom: 60,
     },
     title: {
-        fontSize: 24,
+        backgroundColor: '#000000',
+        color: '#ffffff',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 6,
+    },
+    title3: {
+        fontSize: 22,
+        marginTop: 16,
         marginBottom: 16,
+        backgroundColor: '#f2f2f2',
+        width: '100%',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 5,
     },
     title2: {
-        fontSize: 18,
+        fontSize: 16,
     },
     inputContainer: {
         width: '80%',
@@ -140,8 +175,8 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
     input: {
-        width: '100%',
-        padding: 8,
+        width: '70%',
+        padding: 5,
         borderWidth: 1,
         borderColor: '#ccc',
         marginBottom: 10,
@@ -150,7 +185,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 16,
+        marginBottom: 30,
     },
     footer: {
         position: 'absolute',
@@ -158,14 +193,12 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         height: 60,
-        backgroundColor: '#a6f5a6', 
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: '#8cfa92',
         padding: 16,
-        borderWidth: 1, 
-        borderColor: '#000', 
+        borderWidth: 1,
+        borderColor: '#000',
         fontSize: 22,
     },
 });
 
-export default App;
+export default Calc;
