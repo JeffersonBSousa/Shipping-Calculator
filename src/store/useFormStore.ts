@@ -40,6 +40,7 @@ interface FormData {
 
   viagens: Viagem[];
   addViagem: (viagem: Viagem) => void;
+  updateViagem: (index: number, updatedViagem: Viagem) => void; // Novo método de edição
   removeViagem: (index: number) => void;
   removeAllViagens: () => void;
   calcularTotais: () => { totalFretes: number; totalLucro: number; totalDistancia: number; totalCustos: number };
@@ -48,7 +49,7 @@ interface FormData {
 const useFormStore = create<FormData>((set, get) => ({
   nomeMotorista: '',
   modeloCaminhao: '',
-  mediaCaminhao: '', // Adiciona o mediaCaminhao aqui
+  mediaCaminhao: '',
 
   valorFrete: '0',
   distanciaViagem: '0',
@@ -71,9 +72,15 @@ const useFormStore = create<FormData>((set, get) => ({
 
   viagens: [],
   addViagem: (viagem) => set(state => ({ viagens: [...state.viagens, viagem] })),
+  
+  updateViagem: (index, updatedViagem) => set(state => ({
+    viagens: state.viagens.map((viagem, i) => i === index ? updatedViagem : viagem)
+  })),
+
   removeViagem: (index) => set(state => ({
     viagens: state.viagens.filter((_, i) => i !== index),
   })),
+
   removeAllViagens: () => set({ viagens: [] }),
 
   calcularTotais: () => {
@@ -82,7 +89,7 @@ const useFormStore = create<FormData>((set, get) => ({
     const totalLucro = viagens.reduce((sum, viagem) => sum + parseFloat(viagem.lucro), 0);
     const totalDistancia = viagens.reduce((sum, viagem) => sum + parseFloat(viagem.distanciaViagem), 0);
     const totalCustos = viagens.reduce((sum, viagem) => {
-      const custoCombustivel = parseFloat(viagem.preçoCombustivel) * (parseFloat(viagem.distanciaViagem) / parseFloat(mediaCaminhao || '1')); // Use o mediaCaminhao aqui
+      const custoCombustivel = parseFloat(viagem.preçoCombustivel) * (parseFloat(viagem.distanciaViagem) / parseFloat(mediaCaminhao || '1'));
       return sum + parseFloat(viagem.alimentação) + parseFloat(viagem.pagamentoAjudante) + parseFloat(viagem.estadia) + parseFloat(viagem.outrosCustos) + custoCombustivel;
     }, 0);
     return { totalFretes, totalLucro, totalDistancia, totalCustos };
