@@ -6,7 +6,6 @@ interface Viagem {
   preçoCombustivel: string;
   alimentação: string;
   pagamentoAjudante: string;
-  estadia: string;
   outrosCustos: string;
   lucro: string;
 }
@@ -23,7 +22,6 @@ interface FormData {
   preçoCombustivel: string;
   alimentação: string;
   pagamentoAjudante: string;
-  estadia: string;
   outrosCustos: string;
 
   // Métodos de atualização
@@ -35,7 +33,6 @@ interface FormData {
   setPreçoCombustivel: (value: string) => void;
   setAlimentação: (value: string) => void;
   setPagamentoAjudante: (value: string) => void;
-  setEstadia: (value: string) => void;
   setOutrosCustos: (value: string) => void;
 
   viagens: Viagem[];
@@ -51,13 +48,12 @@ const useFormStore = create<FormData>((set, get) => ({
   modeloCaminhao: '',
   mediaCaminhao: '',
 
-  valorFrete: '0',
-  distanciaViagem: '0',
-  preçoCombustivel: '0',
-  alimentação: '0',
-  pagamentoAjudante: '0',
-  estadia: '0',
-  outrosCustos: '0',
+  valorFrete: '',
+  distanciaViagem: '',
+  preçoCombustivel: '',
+  alimentação: '',
+  pagamentoAjudante: '',
+  outrosCustos: '',
 
   setNomeMotorista: (value) => set({ nomeMotorista: value }),
   setModeloCaminhao: (value) => set({ modeloCaminhao: value }),
@@ -67,7 +63,6 @@ const useFormStore = create<FormData>((set, get) => ({
   setPreçoCombustivel: (value) => set({ preçoCombustivel: value }),
   setAlimentação: (value) => set({ alimentação: value }),
   setPagamentoAjudante: (value) => set({ pagamentoAjudante: value }),
-  setEstadia: (value) => set({ estadia: value }),
   setOutrosCustos: (value) => set({ outrosCustos: value }),
 
   viagens: [],
@@ -90,7 +85,7 @@ const useFormStore = create<FormData>((set, get) => ({
     const totalDistancia = viagens.reduce((sum, viagem) => sum + parseFloat(viagem.distanciaViagem), 0);
     const totalCustos = viagens.reduce((sum, viagem) => {
       const custoCombustivel = parseFloat(viagem.preçoCombustivel) * (parseFloat(viagem.distanciaViagem) / parseFloat(mediaCaminhao || '1'));
-      return sum + parseFloat(viagem.alimentação) + parseFloat(viagem.pagamentoAjudante) + parseFloat(viagem.estadia) + parseFloat(viagem.outrosCustos) + custoCombustivel;
+      return sum + parseFloat(viagem.alimentação) + parseFloat(viagem.pagamentoAjudante) + parseFloat(viagem.outrosCustos) + custoCombustivel;
     }, 0);
     return { totalFretes, totalLucro, totalDistancia, totalCustos };
   }
