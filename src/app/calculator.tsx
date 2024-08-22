@@ -55,17 +55,6 @@ const Calc = () => {
             return;
         }
 
-        if (!valorFrete ||
-            !distanciaViagem ||
-            !preçoCombustivel ||
-            !alimentação ||
-            !pagamentoAjudante ||
-            !outrosCustos) {
-            alert('Nenhum campo pode ficar vazio, coloque 0 naquele que não houver valor');
-            return;
-        }
-
-
         addViagem({
             valorFrete,
             distanciaViagem,
@@ -220,15 +209,16 @@ const styles = StyleSheet.create({
     },
     footer: {
         position: 'absolute',
+        justifyContent: 'center',
+        textAlign: 'center',
         bottom: 0,
-        left: 0,
-        right: 0,
         height: 60,
-        backgroundColor: '#8cfa92',
-        padding: 16,
+        width: '100%',
+        backgroundColor: '#99ff99',
+        padding: 14,
         borderWidth: 1,
         borderColor: '#000',
-        fontSize: 22,
+        fontSize: 20,
     },
 });
 

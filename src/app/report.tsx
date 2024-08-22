@@ -54,8 +54,6 @@ const Report = () => {
             yOffset -= 20;
             page.drawText(`Pagamento Ajudante: R$ ${viagem.pagamentoAjudante}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
             yOffset -= 20;
-            page.drawText(`Estadia: R$ ${viagem.estadia}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 20;
             page.drawText(`Outros Custos: R$ ${viagem.outrosCustos}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
             yOffset -= 20;
             page.drawText(`Lucro: R$ ${viagem.lucro}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
@@ -126,7 +124,6 @@ const Report = () => {
                             <Text>Custo Combustível: R$ {(parseFloat(viagem.preçoCombustivel) * (parseFloat(viagem.distanciaViagem) / parseFloat(mediaCaminhao || '1'))).toFixed(2)}</Text>
                             <Text>Alimentação: R$ {viagem.alimentação}</Text>
                             <Text>Pagamento Ajudante: R$ {viagem.pagamentoAjudante}</Text>
-                            <Text>Estadia: R$ {viagem.estadia}</Text>
                             <Text>Outros Custos: R$ {viagem.outrosCustos}</Text>
                             <Text>Lucro: R$ {viagem.lucro}</Text>
                             <View style={styles.aa}>
