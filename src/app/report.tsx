@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Alert, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 import useFormStore from '../store/useFormStore';
 import { PDFDocument, rgb } from 'pdf-lib';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
-
 
 const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
     let binary = '';
@@ -17,6 +17,7 @@ const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
 
 const Report = () => {
     const { viagens, removeViagem, removeAllViagens, calcularTotais, mediaCaminhao } = useFormStore();
+    const router = useRouter();
 
     const handleGeneratePdf = async () => {
         const { totalFretes, totalLucro, totalDistancia, totalCustos } = calcularTotais();
@@ -27,19 +28,18 @@ const Report = () => {
         const { width, height } = page.getSize();
         const fontSize = 12;
 
-      
         page.drawText('Relatório de Viagens', { x: 50, y: height - 50, size: 24, color: rgb(0, 0, 0) });
         page.drawText(`Total de Fretes: R$ ${totalFretes.toFixed(2)}`, { x: 50, y: height - 100, size: fontSize, color: rgb(0, 0, 0) });
         page.drawText(`Total de Lucro: R$ ${totalLucro.toFixed(2)}`, { x: 50, y: height - 120, size: fontSize, color: rgb(0, 0, 0) });
         page.drawText(`Total de Distância: ${totalDistancia.toFixed(2)} Km`, { x: 50, y: height - 140, size: fontSize, color: rgb(0, 0, 0) });
         page.drawText(`Total de Custos: R$ ${totalCustos.toFixed(2)}`, { x: 50, y: height - 160, size: fontSize, color: rgb(0, 0, 0) });
 
-        let yOffset = height - 200; 
+        let yOffset = height - 200;
 
         viagens.forEach((viagem, index) => {
-            if (yOffset < 50) { 
+            if (yOffset < 50) {
                 page = pdfDoc.addPage([600, 800]);
-                yOffset = 750; 
+                yOffset = 750;
             }
 
             page.drawText(`Viagem ${index + 1}:`, { x: 50, y: yOffset, size: 16, color: rgb(0, 0, 0) });
@@ -59,14 +59,13 @@ const Report = () => {
             page.drawText(`Outros Custos: R$ ${viagem.outrosCustos}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
             yOffset -= 20;
             page.drawText(`Lucro: R$ ${viagem.lucro}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 40; 
+            yOffset -= 40;
         });
 
         const pdfBytes = await pdfDoc.save();
         const fileUri = `${FileSystem.documentDirectory}report.pdf`;
 
         try {
-            
             const base64String = uint8ArrayToBase64(pdfBytes);
             await FileSystem.writeAsStringAsync(fileUri, base64String, { encoding: FileSystem.EncodingType.Base64 });
             await shareAsync(fileUri, { mimeType: 'application/pdf' });
@@ -101,6 +100,17 @@ const Report = () => {
         );
     };
 
+    const handleEditViagem = (index: number) => {
+        const viagem = viagens[index];
+        router.push({
+            pathname: '/EditViagem',
+            params: {
+                viagem: JSON.stringify(viagem),
+                index: index.toString(),
+            },
+        });
+    };
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -119,13 +129,16 @@ const Report = () => {
                             <Text>Estadia: R$ {viagem.estadia}</Text>
                             <Text>Outros Custos: R$ {viagem.outrosCustos}</Text>
                             <Text>Lucro: R$ {viagem.lucro}</Text>
+                            <View style={styles.aa}>
+                            <Button title="Editar" onPress={() => handleEditViagem(index)} />
                             <Button title="Excluir" onPress={() => handleRemoveViagem(index)} />
+                            </View>
                         </View>
                     ))
                 )}
                 <View style={styles.aa}>
-                <Button title="Excluir Todas as Viagens" onPress={handleRemoveAll} />
-                <Button title="Gerar PDF" onPress={handlePrint} />
+                    <Button title="Excluir Todas as Viagens" onPress={handleRemoveAll} />
+                    <Button title="Gerar PDF" onPress={handlePrint} />
                 </View>
             </ScrollView>
         </View>
@@ -133,9 +146,9 @@ const Report = () => {
 };
 
 const styles = StyleSheet.create({
-    aa:{
+    aa: {
         gap: 10,
-        margin: 20,
+        margin: 10,
     },
     container: {
         flex: 1,

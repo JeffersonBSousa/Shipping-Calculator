@@ -10,14 +10,12 @@ const Calc = () => {
         preçoCombustivel,
         alimentação,
         pagamentoAjudante,
-        estadia,
         outrosCustos,
         setValorFrete,
         setDistanciaViagem,
         setPreçoCombustivel,
         setAlimentação,
         setPagamentoAjudante,
-        setEstadia,
         setOutrosCustos,
         addViagem,
     } = useFormStore();
@@ -34,7 +32,6 @@ const Calc = () => {
             !preçoCombustivel ||
             !alimentação ||
             !pagamentoAjudante ||
-            !estadia ||
             !outrosCustos) {
             alert('Nenhum campo pode ficar vazio, coloque 0 naquele que não houver valor');
             return;
@@ -46,7 +43,7 @@ const Calc = () => {
         const custoCombustivel = parseFloat(preçoCombustivel) * litros;
         console.log({ custoCombustivel });
 
-        const custoTotal = parseFloat(alimentação) + parseFloat(pagamentoAjudante) + parseFloat(estadia) + parseFloat(outrosCustos) + custoCombustivel;
+        const custoTotal = parseFloat(alimentação) + parseFloat(pagamentoAjudante) + parseFloat(outrosCustos) + custoCombustivel;
         const lucro = parseFloat(valorFrete) - custoTotal;
         setResult(lucro);
         console.log({ lucro, custoTotal });
@@ -63,32 +60,29 @@ const Calc = () => {
             !preçoCombustivel ||
             !alimentação ||
             !pagamentoAjudante ||
-            !estadia ||
             !outrosCustos) {
             alert('Nenhum campo pode ficar vazio, coloque 0 naquele que não houver valor');
             return;
         }
 
-        
+
         addViagem({
             valorFrete,
             distanciaViagem,
             preçoCombustivel,
             alimentação,
             pagamentoAjudante,
-            estadia,
             outrosCustos,
             lucro: result.toFixed(2),
         });
 
-       
-        setValorFrete("0");
-        setDistanciaViagem("0");
-        setPreçoCombustivel("0");
-        setAlimentação("0");
-        setPagamentoAjudante("0");
-        setEstadia("0");
-        setOutrosCustos("0");
+
+        setValorFrete("");
+        setDistanciaViagem("");
+        setPreçoCombustivel("");
+        setAlimentação("");
+        setPagamentoAjudante("");
+        setOutrosCustos("");
         setResult(null);
 
         alert('Viagem salva com sucesso');
@@ -141,14 +135,6 @@ const Calc = () => {
                     placeholder=""
                     value={pagamentoAjudante}
                     onChangeText={setPagamentoAjudante}
-                />
-                <Text style={styles.title2}>Estadia (R$)</Text>
-                <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                    placeholder=""
-                    value={estadia}
-                    onChangeText={setEstadia}
                 />
                 <Text style={styles.title2}>Outros custos (R$)</Text>
                 <TextInput
