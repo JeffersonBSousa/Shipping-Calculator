@@ -5,6 +5,7 @@ import useFormStore from '../store/useFormStore';
 
 // Defina a interface Viagem para garantir a estrutura dos dados
 interface Viagem {
+    nomeViagem: string; // Adicionado o nome da viagem
     valorFrete: string;
     distanciaViagem: string;
     preçoCombustivel: string;
@@ -28,6 +29,7 @@ const EditViagem = () => {
     const { updateViagem } = useFormStore();
 
     // Defina os estados iniciais com base na `viagem` convertida
+    const [nomeViagem, setNomeViagem] = useState(viagem?.nomeViagem || ''); // Estado para o nome da viagem
     const [valorFrete, setValorFrete] = useState(viagem?.valorFrete || '');
     const [distanciaViagem, setDistanciaViagem] = useState(viagem?.distanciaViagem || '');
     const [preçoCombustivel, setPreçoCombustivel] = useState(viagem?.preçoCombustivel || '');
@@ -39,6 +41,7 @@ const EditViagem = () => {
 
     const handleSave = () => {
         const updatedViagem = {
+            nomeViagem, // Inclui o nome da viagem nos dados atualizados
             valorFrete,
             distanciaViagem,
             preçoCombustivel,
@@ -64,6 +67,12 @@ const EditViagem = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Editar Viagem</Text>
+            <Text>Nome da Viagem:</Text>
+            <TextInput
+                style={styles.input}
+                value={nomeViagem}
+                onChangeText={setNomeViagem}
+            />
             <Text>Frete (R$):</Text>
             <TextInput
                 style={styles.input}

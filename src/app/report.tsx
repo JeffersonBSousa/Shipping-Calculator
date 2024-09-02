@@ -16,7 +16,7 @@ const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
 };
 
 const Report = () => {
-    const { viagens, removeViagem, removeAllViagens, calcularTotais, mediaCaminhao } = useFormStore();
+    const { viagens, removeViagem, removeAllViagens, calcularTotais, mediaCaminhao, nomeMotorista, modeloCaminhao } = useFormStore(); // Adicione as variáveis de motorista e modelo do caminhão
     const router = useRouter();
 
     const handleGeneratePdf = async () => {
@@ -25,16 +25,18 @@ const Report = () => {
         const pdfDoc = await PDFDocument.create();
 
         let page = pdfDoc.addPage([600, 800]);
-        const { width, height } = page.getSize();
+        const { height } = page.getSize();
         const fontSize = 12;
 
         page.drawText('Relatório de Viagens', { x: 50, y: height - 50, size: 24, color: rgb(0, 0, 0) });
-        page.drawText(`Total de Fretes: R$ ${totalFretes.toFixed(2)}`, { x: 50, y: height - 100, size: fontSize, color: rgb(0, 0, 0) });
-        page.drawText(`Total de Lucro: R$ ${totalLucro.toFixed(2)}`, { x: 50, y: height - 120, size: fontSize, color: rgb(0, 0, 0) });
-        page.drawText(`Total de Distância: ${totalDistancia.toFixed(2)} Km`, { x: 50, y: height - 140, size: fontSize, color: rgb(0, 0, 0) });
-        page.drawText(`Total de Custos: R$ ${totalCustos.toFixed(2)}`, { x: 50, y: height - 160, size: fontSize, color: rgb(0, 0, 0) });
+        page.drawText(`Nome do Motorista: ${nomeMotorista}`, { x: 50, y: height - 80, size: fontSize, color: rgb(0, 0, 0) });
+        page.drawText(`Modelo do Caminhão: ${modeloCaminhao}`, { x: 50, y: height - 100, size: fontSize, color: rgb(0, 0, 0) });
+        page.drawText(`Total de Fretes: R$ ${totalFretes.toFixed(2)}`, { x: 50, y: height - 140, size: fontSize, color: rgb(0, 0, 0) });
+        page.drawText(`Total de Lucro: R$ ${totalLucro.toFixed(2)}`, { x: 50, y: height - 160, size: fontSize, color: rgb(0, 0, 0) });
+        page.drawText(`Total de Distância: ${totalDistancia.toFixed(2)} Km`, { x: 50, y: height - 180, size: fontSize, color: rgb(0, 0, 0) });
+        page.drawText(`Total de Custos: R$ ${totalCustos.toFixed(2)}`, { x: 50, y: height - 200, size: fontSize, color: rgb(0, 0, 0) });
 
-        let yOffset = height - 200;
+        let yOffset = height - 240;
 
         viagens.forEach((viagem, index) => {
             if (yOffset < 50) {
@@ -43,6 +45,8 @@ const Report = () => {
             }
 
             page.drawText(`Viagem ${index + 1}:`, { x: 50, y: yOffset, size: 16, color: rgb(0, 0, 0) });
+            yOffset -= 20;
+            page.drawText(`${viagem.nomeViagem}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
             yOffset -= 20;
             page.drawText(`Frete: R$ ${viagem.valorFrete}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
             yOffset -= 20;
@@ -118,7 +122,7 @@ const Report = () => {
                 ) : (
                     viagens.map((viagem, index) => (
                         <View key={index} style={styles.viagemContainer}>
-                            <Text style={styles.viagemTitle}>Viagem {index + 1}</Text>
+                            <Text style={styles.viagemTitle}>{viagem.nomeViagem}</Text>
                             <Text>Frete: R$ {viagem.valorFrete}</Text>
                             <Text>Distância: {viagem.distanciaViagem} Km</Text>
                             <Text>Custo Combustível: R$ {(parseFloat(viagem.preçoCombustivel) * (parseFloat(viagem.distanciaViagem) / parseFloat(mediaCaminhao || '1'))).toFixed(2)}</Text>
@@ -127,8 +131,8 @@ const Report = () => {
                             <Text>Outros Custos: R$ {viagem.outrosCustos}</Text>
                             <Text>Lucro: R$ {viagem.lucro}</Text>
                             <View style={styles.aa}>
-                            <Button title="Editar" onPress={() => handleEditViagem(index)} />
-                            <Button title="Excluir" onPress={() => handleRemoveViagem(index)} />
+                                <Button title="Editar" onPress={() => handleEditViagem(index)} />
+                                <Button title="Excluir" onPress={() => handleRemoveViagem(index)} />
                             </View>
                         </View>
                     ))
@@ -156,16 +160,21 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 20,
     },
-    message: {
-        fontSize: 16,
-        color: 'gray',
-    },
     viagemContainer: {
         marginBottom: 20,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
     },
     viagemTitle: {
         fontSize: 18,
         fontWeight: 'bold',
+    },
+    message: {
+        textAlign: 'center',
+        fontSize: 18,
+        marginTop: 20,
     },
 });
 

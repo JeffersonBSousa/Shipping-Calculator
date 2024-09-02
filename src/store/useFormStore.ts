@@ -8,6 +8,7 @@ interface Viagem {
   pagamentoAjudante: string;
   outrosCustos: string;
   lucro: string;
+  nomeViagem: string;
 }
 
 interface FormData {

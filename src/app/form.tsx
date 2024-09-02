@@ -1,26 +1,27 @@
 import React from 'react';
-import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
+import { Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';
 import { ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 import useFormStore from '../store/useFormStore';
 
 const FichaMotorista = () => {
-    const { nomeMotorista, modeloCaminhao, mediaCaminhao, setMediaCaminhao, setModeloCaminhao, setNomeMotorista} = useFormStore ();
+    const { nomeMotorista, modeloCaminhao, mediaCaminhao, setMediaCaminhao, setModeloCaminhao, setNomeMotorista } = useFormStore();
+    const router = useRouter();
 
-    const handleSubmit = () =>{
-
+    const handleSubmit = () => {
         if (!nomeMotorista || !modeloCaminhao || !mediaCaminhao) {
-            alert('Por favor, preencha todos os campos.');
+            Alert.alert('Aviso', 'Por favor, preencha todos os campos.');
             return;
         }
 
-        alert('Informações atualizadas.');
-    }
+        Alert.alert('Sucesso', 'Informações atualizadas.', [
+            { text: 'OK', onPress: () => router.push('/Details') }
+        ]);
+    };
 
     return (
         <View>
-            <Text style={styles.title}>
-                Preencha as Informações
-            </Text>
+            <Text style={styles.title}>Preencha as Informações</Text>
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <Text style={styles.title2}>Nome do Motorista:</Text>
                 <TextInput
@@ -29,7 +30,6 @@ const FichaMotorista = () => {
                     placeholder=" "
                     value={nomeMotorista}
                     onChangeText={setNomeMotorista}
-
                 />
                 <Text style={styles.title2}>Modelo do Caminhão:</Text>
                 <TextInput
@@ -38,7 +38,6 @@ const FichaMotorista = () => {
                     placeholder=" "
                     value={modeloCaminhao}
                     onChangeText={setModeloCaminhao}
-
                 />
                 <Text style={styles.title2}>Média de Consumo (Km/L) do Caminhão:</Text>
                 <TextInput
@@ -47,7 +46,6 @@ const FichaMotorista = () => {
                     placeholder="Apenas numero"
                     value={mediaCaminhao}
                     onChangeText={setMediaCaminhao}
-
                 />
                 <View style={styles.buttonContainer}>
                     <Button title="Atualizar" onPress={handleSubmit} />
@@ -55,7 +53,7 @@ const FichaMotorista = () => {
             </ScrollView>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     title: {
@@ -88,6 +86,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 50,
     },
-})
+});
 
 export default FichaMotorista;
