@@ -3,9 +3,8 @@ import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import useFormStore from '../store/useFormStore';
 
-// Defina a interface Viagem para garantir a estrutura dos dados
 interface Viagem {
-    nomeViagem: string; // Adicionado o nome da viagem
+    nomeViagem: string;
     valorFrete: string;
     distanciaViagem: string;
     preçoCombustivel: string;
@@ -19,17 +18,14 @@ interface Viagem {
 const EditViagem = () => {
     const router = useRouter();
     const { viagem: viagemParam, index } = useLocalSearchParams();
-    
-    // Converta a `viagemParam` para o tipo Viagem, assumindo que ela seja uma string JSON
+
     const viagem = viagemParam ? JSON.parse(viagemParam as string) : {} as Viagem;
 
-    // Certifique-se de que `index` é um número
     const viagemIndex = typeof index === 'string' ? parseInt(index) : 0;
-    
+
     const { updateViagem } = useFormStore();
 
-    // Defina os estados iniciais com base na `viagem` convertida
-    const [nomeViagem, setNomeViagem] = useState(viagem?.nomeViagem || ''); // Estado para o nome da viagem
+    const [nomeViagem, setNomeViagem] = useState(viagem?.nomeViagem || '');
     const [valorFrete, setValorFrete] = useState(viagem?.valorFrete || '');
     const [distanciaViagem, setDistanciaViagem] = useState(viagem?.distanciaViagem || '');
     const [preçoCombustivel, setPreçoCombustivel] = useState(viagem?.preçoCombustivel || '');
@@ -41,7 +37,7 @@ const EditViagem = () => {
 
     const handleSave = () => {
         const updatedViagem = {
-            nomeViagem, // Inclui o nome da viagem nos dados atualizados
+            nomeViagem,
             valorFrete,
             distanciaViagem,
             preçoCombustivel,
@@ -57,8 +53,7 @@ const EditViagem = () => {
             {
                 text: 'OK',
                 onPress: () => {
-                    console.log('Redirecionando para /report');
-                    router.push('/report'); // Corrigido para o caminho correto
+                    router.back();
                 }
             }
         ]);

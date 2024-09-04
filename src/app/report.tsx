@@ -1,83 +1,158 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Alert, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import useFormStore from '../store/useFormStore';
-import { PDFDocument, rgb } from 'pdf-lib';
-import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
+import * as Print from 'expo-print';
+import * as MediaLibrary from 'expo-media-library';
+import * as FileSystem from 'expo-file-system';
+import { Asset } from 'expo-asset';
 
-const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
-    let binary = '';
-    const len = uint8Array.byteLength;
-    for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(uint8Array[i]);
+const logo = require('../../assets/images/logo.png');
+
+async function convertImageToBase64(imageUri: string): Promise<string | null> {
+    try {
+        const base64 = await FileSystem.readAsStringAsync(imageUri, {
+            encoding: FileSystem.EncodingType.Base64,
+        });
+        return `data:image/png;base64,${base64}`;
+    } catch (error) {
+        console.error('Erro ao converter imagem para Base64:', error);
+        return null;
     }
-    return btoa(binary);
-};
+}
 
 const Report = () => {
-    const { viagens, removeViagem, removeAllViagens, calcularTotais, mediaCaminhao, nomeMotorista, modeloCaminhao } = useFormStore(); // Adicione as variáveis de motorista e modelo do caminhão
+    const { viagens, removeViagem, removeAllViagens, calcularTotais, mediaCaminhao, nomeMotorista, modeloCaminhao } = useFormStore();
     const router = useRouter();
+
+    useEffect(() => {
+        const requestPermissions = async () => {
+            const { status } = await MediaLibrary.requestPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Permissão necessária', 'Você precisa conceder permissão para gerar o PDF.');
+            }
+        };
+        requestPermissions();
+    }, []);
 
     const handleGeneratePdf = async () => {
         const { totalFretes, totalLucro, totalDistancia, totalCustos } = calcularTotais();
 
-        const pdfDoc = await PDFDocument.create();
+        const imageAsset = Asset.fromModule(logo);
+        await imageAsset.downloadAsync(); 
 
-        let page = pdfDoc.addPage([600, 800]);
-        const { height } = page.getSize();
-        const fontSize = 12;
+        const base64Image = await convertImageToBase64(imageAsset.localUri || '');
 
-        page.drawText('Relatório de Viagens', { x: 50, y: height - 50, size: 24, color: rgb(0, 0, 0) });
-        page.drawText(`Nome do Motorista: ${nomeMotorista}`, { x: 50, y: height - 80, size: fontSize, color: rgb(0, 0, 0) });
-        page.drawText(`Modelo do Caminhão: ${modeloCaminhao}`, { x: 50, y: height - 100, size: fontSize, color: rgb(0, 0, 0) });
-        page.drawText(`Total de Fretes: R$ ${totalFretes.toFixed(2)}`, { x: 50, y: height - 140, size: fontSize, color: rgb(0, 0, 0) });
-        page.drawText(`Total de Lucro: R$ ${totalLucro.toFixed(2)}`, { x: 50, y: height - 160, size: fontSize, color: rgb(0, 0, 0) });
-        page.drawText(`Total de Distância: ${totalDistancia.toFixed(2)} Km`, { x: 50, y: height - 180, size: fontSize, color: rgb(0, 0, 0) });
-        page.drawText(`Total de Custos: R$ ${totalCustos.toFixed(2)}`, { x: 50, y: height - 200, size: fontSize, color: rgb(0, 0, 0) });
+        if (!base64Image) {
+            Alert.alert('Erro', 'Não foi possível carregar a imagem. Verifique o caminho da imagem.');
+            return;
+        }
 
-        let yOffset = height - 240;
+        const htmlContent = `
+        <html>
+<head>
+    <style>
+        @page {
+            margin: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background-color: #f0f0f0;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            flex-direction: column;
+        }
+        .header-image {
+            height: 120px;
+        }
+        .content {
+            margin-top: 200px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 100px; /* Reset margin-top for grid-container */
+        }
+        .grid-item {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+        .grid-item h3 {
+            margin-top: 0;
+        }
+        .grid-item p {
+            margin: 5px 0;
+        }
+        .page-break {
+            page-break-before: always;
+            height: 0;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h2><strong>Relatório de Viagens</strong></h2>
+            <p><strong>Nome do Motorista:</strong> ${nomeMotorista}</p>
+            <p><strong>Modelo do Caminhão:</strong> ${modeloCaminhao}</p>
+        </div>
+        <img src="${base64Image}" alt="Logo" class="header-image">
+    </div>
+    <div class="content">
+        <div class="grid-container">
+            ${viagens.map((viagem, index) => `
+                <div class="grid-item">
+                    <h3>${viagem.nomeViagem}</h3>
+                    <p><strong>Frete:</strong> R$ ${viagem.valorFrete}</p>
+                    <p><strong>Distância:</strong> ${viagem.distanciaViagem} Km</p>
+                    <p><strong>Custo Combustível:</strong> R$ ${(parseFloat(viagem.preçoCombustivel) * (parseFloat(viagem.distanciaViagem) / parseFloat(mediaCaminhao || '1'))).toFixed(2)}</p>
+                    <p><strong>Alimentação:</strong> R$ ${viagem.alimentação}</p>
+                    <p><strong>Pagamento Ajudante:</strong> R$ ${viagem.pagamentoAjudante}</p>
+                    <p><strong>Outros Custos:</strong> R$ ${viagem.outrosCustos}</p>
+                    <p><strong>Lucro:</strong> R$ ${viagem.lucro}</p>
+                </div>
+                ${index % 6 === 5 ? '<div class="page-break"></div>' : ''}
+            `).join('')}
+        </div>
+    </div>
+</body>
+</html>`;
 
-        viagens.forEach((viagem, index) => {
-            if (yOffset < 50) {
-                page = pdfDoc.addPage([600, 800]);
-                yOffset = 750;
-            }
 
-            page.drawText(`Viagem ${index + 1}:`, { x: 50, y: yOffset, size: 16, color: rgb(0, 0, 0) });
-            yOffset -= 20;
-            page.drawText(`${viagem.nomeViagem}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 20;
-            page.drawText(`Frete: R$ ${viagem.valorFrete}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 20;
-            page.drawText(`Distância: ${viagem.distanciaViagem} Km`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 20;
-            page.drawText(`Custo Combustível: R$ ${(parseFloat(viagem.preçoCombustivel) * (parseFloat(viagem.distanciaViagem) / parseFloat(mediaCaminhao || '1'))).toFixed(2)}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 20;
-            page.drawText(`Alimentação: R$ ${viagem.alimentação}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 20;
-            page.drawText(`Pagamento Ajudante: R$ ${viagem.pagamentoAjudante}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 20;
-            page.drawText(`Outros Custos: R$ ${viagem.outrosCustos}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 20;
-            page.drawText(`Lucro: R$ ${viagem.lucro}`, { x: 50, y: yOffset, size: fontSize, color: rgb(0, 0, 0) });
-            yOffset -= 40;
-        });
 
-        const pdfBytes = await pdfDoc.save();
-        const fileUri = `${FileSystem.documentDirectory}report.pdf`;
 
         try {
-            const base64String = uint8ArrayToBase64(pdfBytes);
-            await FileSystem.writeAsStringAsync(fileUri, base64String, { encoding: FileSystem.EncodingType.Base64 });
-            await shareAsync(fileUri, { mimeType: 'application/pdf' });
-        } catch (error) {
-            console.error('Erro ao salvar o PDF:', error);
-        }
-    };
+            const { uri } = await Print.printToFileAsync({ html: htmlContent });
 
-    const handlePrint = async () => {
-        await handleGeneratePdf();
+            await shareAsync(uri, { mimeType: 'application/pdf' });
+        } catch (error) {
+            console.error('Erro ao gerar o PDF:', error);
+            Alert.alert('Erro', 'Não foi possível gerar o PDF. Por favor, tente novamente.');
+        }
     };
 
     const handleRemoveViagem = (index: number) => {
@@ -139,7 +214,7 @@ const Report = () => {
                 )}
                 <View style={styles.aa}>
                     <Button title="Excluir Todas as Viagens" onPress={handleRemoveAll} />
-                    <Button title="Gerar PDF" onPress={handlePrint} />
+                    <Button title="Gerar PDF" onPress={handleGeneratePdf} />
                 </View>
             </ScrollView>
         </View>

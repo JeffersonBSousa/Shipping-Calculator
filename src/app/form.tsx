@@ -15,7 +15,7 @@ const FichaMotorista = () => {
         }
 
         Alert.alert('Sucesso', 'Informações atualizadas.', [
-            { text: 'OK', onPress: () => router.push('/Details') }
+            { text: 'OK', onPress: () => router.back() }
         ]);
     };
 

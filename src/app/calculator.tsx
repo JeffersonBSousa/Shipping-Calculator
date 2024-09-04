@@ -21,7 +21,7 @@ const Calc = () => {
     } = useFormStore();
 
     const [result, setResult] = useState<number | null>(null);
-    const [nomeViagem, setNomeViagem] = useState<string>(''); // Novo estado para o nome da viagem
+    const [nomeViagem, setNomeViagem] = useState<string>('');
 
     const handleSubmit = () => {
         if (!mediaCaminhao) {
