@@ -8,15 +8,14 @@ interface Viagem {
   pagamentoAjudante: string;
   outrosCustos: string;
   lucro: string;
+  nomeViagem: string;
 }
 
 interface FormData {
-  // Ficha do motorista
   nomeMotorista: string;
   modeloCaminhao: string;
   mediaCaminhao: string;
 
-  // Calculadora
   valorFrete: string;
   distanciaViagem: string;
   preçoCombustivel: string;
@@ -24,7 +23,6 @@ interface FormData {
   pagamentoAjudante: string;
   outrosCustos: string;
 
-  // Métodos de atualização
   setNomeMotorista: (value: string) => void;
   setModeloCaminhao: (value: string) => void;
   setMediaCaminhao: (value: string) => void;
@@ -37,7 +35,7 @@ interface FormData {
 
   viagens: Viagem[];
   addViagem: (viagem: Viagem) => void;
-  updateViagem: (index: number, updatedViagem: Viagem) => void; // Novo método de edição
+  updateViagem: (index: number, updatedViagem: Viagem) => void;
   removeViagem: (index: number) => void;
   removeAllViagens: () => void;
   calcularTotais: () => { totalFretes: number; totalLucro: number; totalDistancia: number; totalCustos: number };

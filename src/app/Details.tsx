@@ -15,11 +15,11 @@ const Details= () => {
       </Text>
       <View style={styles.container}>
         <Text style={styles.text1}>Nome do Motorista:</Text>
-        <Text style={styles.text2}>{nomeMotorista}.</Text>
+        <Text style={styles.text2}>{nomeMotorista} </Text>
         <Text style={styles.text1}>Modelo do Caminhão:</Text>
-        <Text style={styles.text2}>{modeloCaminhao}.</Text>
+        <Text style={styles.text2}>{modeloCaminhao} </Text>
         <Text style={styles.text1}>Média de Consumo:</Text>
-        <Text style={styles.text2}>{mediaCaminhao} Km/L</Text>
+        <Text style={styles.text2}>{mediaCaminhao}Km/L</Text>
 
         <Link href="/form" asChild>
           <Button title='Editar informações' />
